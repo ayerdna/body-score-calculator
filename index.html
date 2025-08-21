@@ -1,61 +1,177 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Advanced Body Score Calculator</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Advanced Body Score</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Advanced Body Score Calculator</h1>
-    
-    <form id="calcForm">
-      <div class="section">
-        <h2>Basic Info</h2>
-        <label>Age: <input type="number" id="age" value="25"></label>
-        <label>Sex:
-          <select id="sex">
-            <option value="F">Female</option>
-            <option value="M">Male</option>
-          </select>
-        </label>
-        <label>Height (cm): <input type="number" id="height" value="170"></label>
-        <label>Weight (kg): <input type="number" id="weight" value="70"></label>
+  <div class="wrap">
+    <header>
+      <h1>Advanced Body Score</h1>
+      <p class="sub">BMI • Frame size • US Navy body fat • Unified Body Score</p>
+    </header>
+
+    <main class="card">
+      <form id="form" onsubmit="return false;">
+        <section class="section">
+          <h2>Basics</h2>
+
+          <label>Sex
+            <select id="sex">
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+            </select>
+          </label>
+
+          <div class="row">
+            <div class="col">
+              <label>Height
+                <div class="inline">
+                  <select id="heightUnit">
+                    <option value="cm">cm</option>
+                    <option value="ftin">ft + in</option>
+                  </select>
+                  <input id="heightCm" type="number" placeholder="cm" min="0" step="0.1">
+                  <div id="ftinInputs" class="ftin hidden">
+                    <input id="heightFt" type="number" placeholder="ft" min="0" step="1">
+                    <input id="heightIn" type="number" placeholder="in" min="0" step="0.1">
+                  </div>
+                </div>
+              </label>
+            </div>
+
+            <div class="col">
+              <label>Weight
+                <div class="inline">
+                  <select id="weightUnit">
+                    <option value="kg">kg</option>
+                    <option value="lbs">lbs</option>
+                  </select>
+                  <input id="weightKg" type="number" placeholder="kg" min="0" step="0.1">
+                  <input id="weightLbs" class="hidden" type="number" placeholder="lbs" min="0" step="0.1">
+                </div>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Circumferences (for Navy method)</h2>
+          <div class="row">
+            <div class="col">
+              <label>Neck
+                <div class="inline">
+                  <select id="circUnitNeck" class="smallSelect">
+                    <option value="cm">cm</option>
+                    <option value="in">in</option>
+                  </select>
+                  <input id="neck" type="number" placeholder="neck" min="0" step="0.1">
+                </div>
+              </label>
+            </div>
+
+            <div class="col">
+              <label>Waist
+                <div class="inline">
+                  <select id="circUnitWaist" class="smallSelect">
+                    <option value="cm">cm</option>
+                    <option value="in">in</option>
+                  </select>
+                  <input id="waist" type="number" placeholder="waist" min="0" step="0.1">
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <label id="hipLabel">Hip (required for females)
+                <div class="inline">
+                  <select id="circUnitHip" class="smallSelect">
+                    <option value="cm">cm</option>
+                    <option value="in">in</option>
+                  </select>
+                  <input id="hip" type="number" placeholder="hip" min="0" step="0.1">
+                </div>
+              </label>
+            </div>
+
+            <div class="col">
+              <label>Wrist (for frame)
+                <div class="inline">
+                  <select id="circUnitWrist" class="smallSelect">
+                    <option value="cm">cm</option>
+                    <option value="in">in</option>
+                  </select>
+                  <input id="wrist" type="number" placeholder="wrist" min="0" step="0.1">
+                </div>
+              </label>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="section">
+          <h2>Extras</h2>
+          <label>Hormones normal?
+            <select id="hormones">
+              <option value="y">Yes</option>
+              <option value="n">No</option>
+            </select>
+          </label>
+        </section>
+
+        <div class="actions">
+          <button id="calcBtn" class="btn">Calculate</button>
+          <button id="clearBtn" class="btn ghost" type="button">Clear</button>
+        </div>
+      </form>
+
+      <div id="output" class="output hidden">
+        <div class="resultRow">
+          <div>
+            <h3>BMI</h3>
+            <p id="bmiText"></p>
+            <small id="bmiCat"></small>
+          </div>
+          <div>
+            <h3>Frame</h3>
+            <p id="frameText"></p>
+            <small id="frameExplain"></small>
+          </div>
+        </div>
+
+        <div class="resultRow">
+          <div>
+            <h3>US Navy Body Fat %</h3>
+            <p id="bfText"></p>
+            <small id="bfCategory"></small>
+          </div>
+          <div>
+            <h3>Body Score</h3>
+            <p id="scoreText"></p>
+            <div id="scoreBar" class="scoreBar">
+              <div id="scoreFill" class="scoreFill"></div>
+            </div>
+            <small id="scoreCategory"></small>
+          </div>
+        </div>
+
+        <details class="notes">
+          <summary>How the score works</summary>
+          <p>The Body Score combines body-fat (50%), a muscle proxy (30%), and BMI (20%) into a single 0–100 score.
+          Categories: Athlete (best) → Lean → Healthy → Overfat → Obese.</p>
+        </details>
       </div>
+    </main>
 
-      <div class="section">
-        <h2>Body Measurements</h2>
-        <label>Neck (cm): <input type="number" id="neck" value="35"></label>
-        <label>Waist (cm): <input type="number" id="waist" value="75"></label>
-        <label id="hipLabel">Hip (cm, females only): <input type="number" id="hip" value="95"></label>
-      </div>
-
-      <div class="section">
-        <h2>Other Info</h2>
-        <label>Bone Frame:
-          <select id="bone">
-            <option value="S">Small</option>
-            <option value="M" selected>Medium</option>
-            <option value="L">Large</option>
-          </select>
-        </label>
-        <label>Hormones Normal?
-          <select id="hormones">
-            <option value="Y" selected>Yes</option>
-            <option value="N">No</option>
-          </select>
-        </label>
-      </div>
-
-      <button type="button" onclick="calculate()">Calculate</button>
-    </form>
-
-    <div id="result"></div>
+    <footer class="footer">
+      <small>Not medical advice. For informational purposes only.</small>
+    </footer>
   </div>
-    
+
   <script src="script.js"></script>
 </body>
 </html>
-<label for="wrist">Wrist Circumference (inches):</label>
-<input type="number" id="wrist" step="0.1">
-<div id="result"></div>
