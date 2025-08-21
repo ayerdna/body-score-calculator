@@ -1,3 +1,3 @@
-[index.html](https://github.com/user-attachments/files/21907589/index.html)
-[script.js](https://github.com/user-attachments/files/21907588/script.js)
-[style.css](https://github.com/user-attachments/files/21907587/style.css)
+[index.html](https://github.com/user-attachments/files/21910321/index.html)
+[style.css](https://github.com/user-attachments/files/21910320/style.css)
+[script.js](https://github.com/user-attachments/files/21910319/script.js)
