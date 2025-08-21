@@ -1,66 +1,47 @@
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f0f2f5;
-  margin: 0;
-  padding: 0;
-}
+document.getElementById("calculate").addEventListener("click", function() {
+    // Inputs
+    let height = parseFloat(document.getElementById("height").value); // in inches
+    let weight = parseFloat(document.getElementById("weight").value); // in pounds
+    let wrist = parseFloat(document.getElementById("wrist").value);   // in inches
+    let sex = document.getElementById("sex").value;
 
-.container {
-  max-width: 500px;
-  margin: 30px auto;
-  background: #fff;
-  padding: 20px 30px;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
+    // Validation
+    if (isNaN(height) || isNaN(weight) || isNaN(wrist)) {
+        document.getElementById("result").innerHTML = "⚠️ Please fill in all fields.";
+        return;
+    }
 
-h1 {
-  text-align: center;
-  color: #333;
-}
+    // Basic BMI
+    let bmi = (weight / (height * height)) * 703;
 
-h2 {
-  color: #555;
-  margin-bottom: 10px;
-}
+    // Frame size from wrist
+    let frame = "Medium";
+    if (sex === "female") {
+        if (wrist <= 5.5) frame = "Small";
+        else if (wrist > 5.75) frame = "Large";
+    } else if (sex === "male") {
+        if (wrist <= 6.5) frame = "Small";
+        else if (wrist > 7.5) frame = "Large";
+    }
 
-label {
-  display: block;
-  margin: 10px 0;
-}
+    // Adjust BMI for frame size
+    let adjusted = bmi;
+    if (frame === "Small") adjusted -= 1.5;
+    if (frame === "Large") adjusted += 1.5;
 
-input, select {
-  width: 100%;
-  padding: 8px;
-  margin-top: 4px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
+    // Classification (reference scale)
+    let category = "";
+    if (adjusted < 18) category = "Underweight";
+    else if (adjusted < 23) category = "Lean / Athletic";
+    else if (adjusted < 28) category = "Balanced / Healthy";
+    else if (adjusted < 33) category = "Heavy Build";
+    else if (adjusted < 38) category = "Muscular / Stocky";
+    else category = "Obese range";
 
-button {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  margin-top: 20px;
-  background: #007bff;
-  color: white;
-  font-size: 16px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #0056b3;
-}
-
-#result {
-  margin-top: 20px;
-  background: #e9f5ff;
-  padding: 15px;
-  border-radius: 10px;
-  font-size: 18px;
-  color: #333;
-  text-align: center;
-}
+    // Display results
+    document.getElementById("result").innerHTML = `
+        <strong>Score:</strong> ${adjusted.toFixed(1)} <br>
+        <strong>Frame Size:</strong> ${frame} <br>
+        <strong>Category:</strong> ${category}
+    `;
+});
